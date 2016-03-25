@@ -6,11 +6,12 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/11 17:27:55 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/03/11 19:30:24 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/03/25 18:45:07 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <netdb.h>
 #include <string.h>
 #include <stdlib.h>
@@ -114,7 +115,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	char buf[400];
+	char buf[64];
 	// t_ip *ip = (t_ip *)buf;
 	struct ip *ip = (struct ip *)buf;
 	t_icmp *icmp = (t_icmp *)(ip + 1);
@@ -126,7 +127,7 @@ int main(int argc, char **argv)
 	ip->ip_v = 4;
 	ip->ip_tos = 0;
 	ip->ip_hl = sizeof(*ip) >> 2;
-	ip->ip_ttl = 200;
+	ip->ip_ttl = 64;
 	ip->ip_len = htons(sizeof(buf));
 	ip->ip_p = IPPROTO_ICMP;
 	ip->ip_sum = 0;
@@ -173,6 +174,47 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+
+	// Reicive
+	int s_rec;
+	s_rec = 0;
+	if ((s_rec = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
+	{
+		perror("socket() error");
+		exit(1);
+	}
+
+	int ret;
+	struct msghdr msg;
+	struct iovec iov[1];
+	//char bufRec[400];
+	char bufControl[1000];
+
+	bzero(buf, sizeof(buf));
+
+	iov[0].iov_base = buf;
+	iov[0].iov_len = sizeof(buf);
+
+	msg.msg_name = res->ai_addr;
+	msg.msg_namelen = res->ai_addrlen;
+	msg.msg_iov = iov;
+	msg.msg_iovlen = 1;
+	msg.msg_control = &bufControl;
+	msg.msg_controllen = sizeof(bufControl);
+	msg.msg_flags = 0;
+
+	ret = recvmsg(s_rec, &msg, 0);
+//ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+//		                 struct sockaddr *src_addr, socklen_t *addrlen);
+
+//	ret = recvfrom(s, buf, sizeof(buf), 0, res->ai_addr, &res->ai_addrlen);
+
+	if (ret < 0)
+		perror("Error recvmsg()");
+
+	printf("Ret: %d\n", ret);
+	printf("Type: %d\n", icmp->type);
+	printf("Code: %d\n", icmp->code);
 	return (0);
 }
 
