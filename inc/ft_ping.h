@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/03/31 17:31:06 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/03/31 18:25:40 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <netinet/ip_icmp.h>
 # include <sys/types.h>
 # include <sys/socket.h>
+# include <sys/time.h>
 # include <arpa/inet.h>
 
 enum	e_flags
@@ -53,6 +54,7 @@ void	pg_configure_header(t_env *env);
 ** Desc: Loop to send ICMP ECHO and receive ICMP REPLY
 */
 
+void	pg_loop(t_env *env);
 
 
 #endif
