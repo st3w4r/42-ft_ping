@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/03/07 15:54:58 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/03/31 17:31:00 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,9 @@ int			main(int argc, char **argv)
 		pg_error_usage();
 	env.flags = 0;
 	pos_args = pg_parse_flags(&env, argc, argv);
+	env.host_dst = argv[1];
+	env.host_src = argv[2];
+	pg_open_socket(&env);
+	pg_configure_header(&env);
 	return (0);
 }
