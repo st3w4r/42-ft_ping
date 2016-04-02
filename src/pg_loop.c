@@ -12,6 +12,15 @@
 
 #include "ft_ping.h"
 
+void	pg_display_response(t_env *env, int bytes_receive)
+{
+	char ip[INET_ADDRSTRLEN];
+
+	inet_ntop(env->res->ai_family, &(env->ip->ip_src.s_addr), ip, sizeof(ip));
+	printf("%d bytes from %s: icmp_seq= ttl= time= ms\n",
+	bytes_receive, ip);
+}
+
 static void	pg_timer(int interval)
 {
 	struct timeval tv_current;
@@ -34,18 +43,28 @@ void	pg_loop(t_env *env)
 {
 	int			nb_send;
 	int			nb_receive;
+	int			packets_send;
+	int			packets_receive;
 
-	while (1)
+	packets_send = 0;
+	packets_receive = 0;
+	while (packets_send < 10)
 	{
 		pg_configure_send(env);
 		if ((nb_send = sendto(env->s, env->buf, sizeof(env->buf), 0,
 			env->res->ai_addr, env->res->ai_addrlen)) < 0)
 			ft_error_str_exit("Error sendto\n");
-		pg_timer(1);
+		if (nb_send >= 0)
+			packets_send++;
+
 		pg_configure_receive(env);
-		// if ((nb_receive = recvmsg(env->s, &(env->msg), MSG_DONTWAIT)) < 0)
-		// 	ft_error_str_exit("Error receive\n");
-		nb_receive = recvmsg(env->s, &(env->msg), MSG_DONTWAIT);
+		nb_receive = recvmsg(env->s, &(env->msg), 0);
+		if (nb_receive >= 0)
+			packets_receive++;
+
+		pg_display_response(env, nb_receive);
 		printf("Recieve: %d\n", nb_receive);
+		pg_timer(1);
 	}
+	printf("%d packets transmitted, %d packets received\n", packets_send, packets_receive);
 }
