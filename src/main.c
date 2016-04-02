@@ -51,6 +51,7 @@ int			main(int argc, char **argv)
 	pos_args = pg_parse_flags(&env, argc, argv);
 	env.host_dst = argv[1];
 	env.host_src = argv[2];
+	env.interval = 1;
 	pg_open_socket(&env);
 	pg_configure_header(&env);
 	pg_loop(&env);

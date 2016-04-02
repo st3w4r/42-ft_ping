@@ -32,13 +32,22 @@ enum	e_flags
 };
 
 typedef struct	s_env {
-	int		flags;
-	int		s;
-	struct addrinfo	hints;
-	struct addrinfo	*res;
-	char	buf[64];
-	char	*host_src;
-	char	*host_dst;
+	int						flags;
+	int						interval;
+	// SOCKET
+	int						s;
+	struct 				addrinfo	hints;
+	struct 				addrinfo	*res;
+	// SEND
+	char					buf[64];
+	char					*host_src;
+	char					*host_dst;
+	struct ip			*ip;
+	struct icmp		*icmp;
+	// RECIEVE
+	struct iovec	iov[1];
+	struct msghdr	msg;
+	char					bufControl[1000];
 }				t_env;
 
 /*
@@ -48,6 +57,8 @@ typedef struct	s_env {
 
 int		pg_open_socket(t_env *env);
 void	pg_configure_header(t_env *env);
+void	pg_configure_send(t_env *env);
+void	pg_configure_receive(t_env *env);
 
 /*
 ** Name: pg_loop

@@ -23,13 +23,14 @@ PATH_INC_LIBFT = ./libft/includes/
 INCLUDES = -I $(PATH_INC) -I $(PATH_INC_LIBFT)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g
 LIBS = -L libft/ -lft
 
 #____________FILES____________#
 
 SRC =	main.c \
-	pg_connect.c
+	pg_connect.c \
+	pg_loop.c
 
 OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))
 
