@@ -53,10 +53,10 @@ void	pg_configure_send(t_env *env, unsigned short id, unsigned short seq)
 	inet_pton(env->res->ai_family, env->host_dst, &(env->ip->ip_dst.s_addr));
 	env->icmp->icmp_type = ICMP_ECHO;
 	env->icmp->icmp_code = 0;
-	env->icmp->icmp_hun.ih_idseq.icd_id = htons(42);
-	env->icmp->icmp_hun.ih_idseq.icd_seq = htons(seq);
+	env->icmp->icmp_hun.ih_idseq.icd_id = htons(id);
+	env->icmp->icmp_hun.ih_idseq.icd_seq = seq;
 	env->icmp->icmp_cksum = htons(pg_icmp_checksum(env->icmp->icmp_type,
-		env->icmp->icmp_code, id, seq));
+		env->icmp->icmp_code, id, htons(seq)));
 }
 
 void	pg_configure_receive(t_env *env)

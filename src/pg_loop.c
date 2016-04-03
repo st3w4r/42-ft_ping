@@ -52,7 +52,7 @@ void	pg_loop(t_env *env)
 	seq = 0;
 	while (packets_send < 10)
 	{
-		pg_configure_send(env, 42, seq);
+		pg_configure_send(env, 6921, seq);
 
 		if ((nb_send = sendto(env->s, env->buf, sizeof(env->buf), 0,
 			env->res->ai_addr, env->res->ai_addrlen)) < 0)
@@ -65,6 +65,7 @@ void	pg_loop(t_env *env)
 		nb_receive = recvmsg(env->s, &(env->msg), 0);
 		if (nb_receive >= 0)
 			packets_receive++;
+
 		pg_display_response(env, nb_receive, seq);
 		seq++;
 		printf("Recieve: %d\n", nb_receive);
