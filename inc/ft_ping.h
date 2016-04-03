@@ -57,7 +57,7 @@ typedef struct	s_env {
 
 int		pg_open_socket(t_env *env);
 void	pg_configure_header(t_env *env);
-void	pg_configure_send(t_env *env);
+void	pg_configure_send(t_env *env, unsigned short id, unsigned short seq);
 void	pg_configure_receive(t_env *env);
 
 /*
@@ -66,6 +66,13 @@ void	pg_configure_receive(t_env *env);
 */
 
 void	pg_loop(t_env *env);
+
+/*
+** Name: pg_helper
+** Desc: Helpers Functions
+*/
+
+unsigned short	pg_icmp_checksum(char type, char code, unsigned short id, unsigned short seq);
 
 
 #endif

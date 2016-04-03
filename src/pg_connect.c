@@ -36,7 +36,8 @@ void	pg_configure_header(t_env *env)
 	env->ip = (struct ip *)env->buf;
 	env->icmp = (struct icmp *)(env->ip + 1);
 }
-void	pg_configure_send(t_env *env)
+
+void	pg_configure_send(t_env *env, unsigned short id, unsigned short seq)
 {
 	ft_memset(&(env->buf), 0, sizeof(env->buf));
 	env->ip->ip_v = 4;
@@ -44,6 +45,7 @@ void	pg_configure_send(t_env *env)
 	env->ip->ip_tos = 0;
 	env->ip->ip_len = htons(sizeof(env->buf));
 	env->ip->ip_id = 0;
+	env->ip->ip_off |= htons(IP_DF);
 	env->ip->ip_ttl = 64;
 	env->ip->ip_p = env->res->ai_protocol;
 	env->ip->ip_sum = 0;
@@ -51,7 +53,10 @@ void	pg_configure_send(t_env *env)
 	inet_pton(env->res->ai_family, env->host_dst, &(env->ip->ip_dst.s_addr));
 	env->icmp->icmp_type = ICMP_ECHO;
 	env->icmp->icmp_code = 0;
-	env->icmp->icmp_cksum = htons(~(ICMP_ECHO << 8));
+	env->icmp->icmp_hun.ih_idseq.icd_id = htons(42);
+	env->icmp->icmp_hun.ih_idseq.icd_seq = htons(seq);
+	env->icmp->icmp_cksum = htons(pg_icmp_checksum(env->icmp->icmp_type,
+		env->icmp->icmp_code, id, seq));
 }
 
 void	pg_configure_receive(t_env *env)

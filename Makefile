@@ -30,7 +30,8 @@ LIBS = -L libft/ -lft
 
 SRC =	main.c \
 	pg_connect.c \
-	pg_loop.c
+	pg_loop.c \
+	pg_helper.c
 
 OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))
 
