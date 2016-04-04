@@ -6,7 +6,7 @@
 #    By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/04 16:13:54 by ybarbier          #+#    #+#              #
-#    Updated: 2016/03/04 16:58:29 by ybarbier         ###   ########.fr        #
+#    Updated: 2016/04/04 12:48:41 by ybarbier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ PATH_INC_LIBFT = ./libft/includes/
 INCLUDES = -I $(PATH_INC) -I $(PATH_INC_LIBFT)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g
+#CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g
+CFLAGS = $(INCLUDES) -g
 LIBS = -L libft/ -lft
 
 #____________FILES____________#

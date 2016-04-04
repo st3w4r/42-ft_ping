@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/03/31 18:01:39 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/04 15:49:53 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int			main(int argc, char **argv)
 	env.host_dst = argv[1];
 	env.host_src = argv[2];
 	env.interval = 1;
+	env.pid = getpid();
+	printf("Pid: %d\n", env.pid);
 	pg_open_socket(&env);
 	pg_configure_header(&env);
 	pg_loop(&env);

@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/03/31 18:25:40 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/04 16:19:30 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,23 @@ enum	e_flags
 typedef struct	s_env {
 	int						flags;
 	int						interval;
+	int						timeout;
+	pid_t					pid;
 	// SOCKET
 	int						s;
-	struct 				addrinfo	hints;
-	struct 				addrinfo	*res;
+	struct addrinfo			hints;
+	struct addrinfo			*res;
 	// SEND
 	char					buf[64];
 	char					*host_src;
 	char					*host_dst;
-	struct ip			*ip;
-	struct icmp		*icmp;
+	struct ip				*ip;
+	struct icmp				*icmp;
 	// RECIEVE
-	struct iovec	iov[1];
-	struct msghdr	msg;
+	struct iovec			iov[1];
+	struct msghdr			msg;
 	char					bufControl[1000];
-}				t_env;
+}							t_env;
 
 /*
 ** Name: pg_connect
@@ -72,7 +74,8 @@ void	pg_loop(t_env *env);
 ** Desc: Helpers Functions
 */
 
-unsigned short	pg_icmp_checksum(char type, char code, unsigned short id, unsigned short seq);
+unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
+	unsigned short seq);
 
 
 #endif
