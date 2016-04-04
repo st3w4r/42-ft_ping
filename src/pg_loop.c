@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/04 16:53:31 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/04 19:30:51 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,25 +60,27 @@ void	pg_loop(t_env *env)
 
 		pg_configure_send(env, env->pid, seq);
 
+		gettimeofday(&tv_start, NULL);
 		if ((nb_send = sendto(env->s, env->buf, sizeof(env->buf), 0,
 			env->res->ai_addr, env->res->ai_addrlen)) < 0)
 			ft_error_str_exit("Error sendto\n");
 		if (nb_send >= 0)
 		{
-			gettimeofday(&tv_start, NULL);
+			//gettimeofday(&tv_start, NULL);
 			//printf("tv_usec: %ld\n", tv_start.tv_usec / 1000);
 			//printf("tv_usec: %ld ", tv_duration.tv_usec);
 			packets_send++;
 		}
 
-		pg_configure_receive(env);
+//		pg_configure_receive(env);
 
 		while (1)
 		{
+			pg_configure_receive(env);
 			nb_receive = recvmsg(env->s, &(env->msg), MSG_DONTWAIT);
-		
+			duration = 0;
 			gettimeofday(&tv_end, NULL);
-			if ((tv_end.tv_sec - tv_start.tv_sec) >= 1)
+			if ((tv_end.tv_sec - tv_start.tv_sec) >= env->timeout)
 			{
 				printf("Request timeout for icmp_seq %hu\n", seq);
 				seq++;

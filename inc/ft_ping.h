@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/04 16:19:30 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/04 19:22:38 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ enum	e_flags
 
 typedef struct	s_env {
 	int						flags;
-	int						interval;
-	int						timeout;
+	unsigned int			interval;
+	unsigned int			timeout;
 	pid_t					pid;
 	// SOCKET
 	int						s;
 	struct addrinfo			hints;
 	struct addrinfo			*res;
 	// SEND
-	char					buf[64];
+	char					buf[28];
 	char					*host_src;
 	char					*host_dst;
 	struct ip				*ip;
