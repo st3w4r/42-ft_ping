@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/04 18:58:20 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/05 12:47:37 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ int			main(int argc, char **argv)
 	t_env	env;
 	int		pos_args;
 
-	printf("Sizeof icmp: %lu\n", sizeof(env.icmp));
 	if (argc <= 1)
 		pg_error_usage();
 	env.flags = 0;
 	pos_args = pg_parse_flags(&env, argc, argv);
 	env.host_dst = argv[1];
-	env.host_src = argv[2];
+	env.host_src = "0.0.0.0";
 	env.interval = 1;
 	env.timeout = 1;
 	env.pid = getpid();
