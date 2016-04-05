@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/04 19:30:51 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/05 16:06:25 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ void	pg_display_response(t_env *env, int bytes_receive, int seq,
 	inet_ntop(env->res->ai_family, &(env->ip->ip_src.s_addr), ip, sizeof(ip));
 	printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3lf ms\n",
 	bytes_receive, ip, seq, env->ip->ip_ttl, duration);
+}
+
+void	pg_display_stats(t_env *env)
+{
+	double	percentage_lost;
+
+	percentage_lost = 0;
+	if (env->packets_send != 0)
+		percentage_lost = 100 - ((env->packets_receive * 100) / env->packets_send);
+	printf("-- %s ping statistics ---\n", env->host_dst);
+	printf("%u packets transmitted, %u packets received, %.2f%% packet loss\n",
+		env->packets_send, env->packets_receive, percentage_lost);
+	printf("round-trip min/avg/max/stddev = 2.354/2.396/2.425/0.031 ms\n");
+	exit(0);
 }
 
 static void	pg_timer(int interval)
@@ -44,17 +58,17 @@ void	pg_loop(t_env *env)
 {
 	int			nb_send;
 	int			nb_receive;
-	int			packets_send;
-	int			packets_receive;
+//	int			packets_send;
+//	int			packets_receive;
 	unsigned short	seq;
 	struct timeval	tv_start;
 	struct timeval	tv_end;
 	double	duration;
 
-	packets_send = 0;
-	packets_receive = 0;
+	env->packets_send = 0;
+	env->packets_receive = 0;
 	seq = 0;
-	while (packets_send < 10)
+	while (env->packets_send < 100000)
 	{
 //			printf("tv_usec: %ld\n", tv_current.tv_usec / 1000);
 
@@ -69,7 +83,7 @@ void	pg_loop(t_env *env)
 			//gettimeofday(&tv_start, NULL);
 			//printf("tv_usec: %ld\n", tv_start.tv_usec / 1000);
 			//printf("tv_usec: %ld ", tv_duration.tv_usec);
-			packets_send++;
+			env->packets_send++;
 		}
 
 //		pg_configure_receive(env);
@@ -90,15 +104,15 @@ void	pg_loop(t_env *env)
 			{
 				duration = (((double)tv_end.tv_sec * 1000000.0 + tv_end.tv_usec) - \
 				((double)tv_start.tv_sec * 1000000.0 + tv_start.tv_usec)) / 1000;
-				packets_receive++;
+				env->packets_receive++;
 				
 				pg_display_response(env, nb_receive, seq, duration);
-				printf("Recieve: %d\n", nb_receive);
 				pg_timer(1);
+			//	alarm(1);
 				seq++;
 				break;
 			}
 		}
 	}
-	printf("%d packets transmitted, %d packets received\n", packets_send, packets_receive);
+	pg_display_stats(env);
 }

@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/04 19:22:38 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/05 15:15:04 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <netdb.h>
+# include <signal.h>
 # include <netinet/in.h>
 # include <netinet/ip.h>
 # include <netinet/ip_icmp.h>
@@ -36,6 +37,8 @@ typedef struct	s_env {
 	unsigned int			interval;
 	unsigned int			timeout;
 	pid_t					pid;
+	unsigned int			packets_send;
+	unsigned int			packets_receive;
 	// SOCKET
 	int						s;
 	struct addrinfo			hints;
@@ -52,6 +55,8 @@ typedef struct	s_env {
 	char					bufControl[1000];
 }							t_env;
 
+t_env	env;
+
 /*
 ** Name: pg_connect
 ** Desc: Configure and open socket
@@ -67,6 +72,7 @@ void	pg_configure_receive(t_env *env);
 ** Desc: Loop to send ICMP ECHO and receive ICMP REPLY
 */
 
+void	pg_display_stats(t_env *env);
 void	pg_loop(t_env *env);
 
 /*
@@ -76,6 +82,7 @@ void	pg_loop(t_env *env);
 
 unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
 	unsigned short seq);
+void	pg_sig_handler(int sig);
 
 
 #endif

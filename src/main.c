@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/05 12:47:37 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/05 15:14:54 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,15 @@ static int	pg_parse_flags(t_env *env, int nb_args, char **args)
 
 int			main(int argc, char **argv)
 {
-	t_env	env;
 	int		pos_args;
 
 	if (argc <= 1)
 		pg_error_usage();
+	signal(SIGALRM, pg_sig_handler);
+	signal(SIGINT, pg_sig_handler);
 	env.flags = 0;
 	pos_args = pg_parse_flags(&env, argc, argv);
-	env.host_dst = argv[1];
+	env.host_dst = argv[pos_args];
 	env.host_src = "0.0.0.0";
 	env.interval = 1;
 	env.timeout = 1;
