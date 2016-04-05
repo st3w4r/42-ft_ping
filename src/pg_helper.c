@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:16:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/05 15:15:26 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/05 16:35:36 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void pg_sig_handler(int sig)
 	if (sig == SIGINT)
 		pg_display_stats(&env);
 	if (sig == SIGALRM)
-		printf("Signal alarm: %d\n", sig);
+		pg_timeout(&env);
 }

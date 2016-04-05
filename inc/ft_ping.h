@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/05 15:15:04 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/05 16:46:33 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # include <sys/time.h>
 # include <arpa/inet.h>
 
+#define TRUE 1
+#define FALSE 0
+
+typedef unsigned char	t_bool;
+
 enum	e_flags
 {
 	FLAGS_V = 1 << 0,
@@ -36,9 +41,11 @@ typedef struct	s_env {
 	int						flags;
 	unsigned int			interval;
 	unsigned int			timeout;
+	t_bool					timeout_flag;
 	pid_t					pid;
 	unsigned int			packets_send;
 	unsigned int			packets_receive;
+	unsigned short			seq;
 	// SOCKET
 	int						s;
 	struct addrinfo			hints;
@@ -73,6 +80,7 @@ void	pg_configure_receive(t_env *env);
 */
 
 void	pg_display_stats(t_env *env);
+void	pg_timeout(t_env *env);
 void	pg_loop(t_env *env);
 
 /*
