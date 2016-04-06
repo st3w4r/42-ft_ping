@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/05 16:46:33 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/06 15:19:21 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct	s_env {
 	pid_t					pid;
 	unsigned int			packets_send;
 	unsigned int			packets_receive;
-	unsigned short			seq;
+//	unsigned short			seq;
 	// SOCKET
 	int						s;
 	struct addrinfo			hints;
@@ -80,7 +80,6 @@ void	pg_configure_receive(t_env *env);
 */
 
 void	pg_display_stats(t_env *env);
-void	pg_timeout(t_env *env);
 void	pg_loop(t_env *env);
 
 /*
@@ -91,6 +90,6 @@ void	pg_loop(t_env *env);
 unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
 	unsigned short seq);
 void	pg_sig_handler(int sig);
-
+void	pg_timeout(t_env *env);
 
 #endif
