@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 12:16:55 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 14:18:46 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ typedef struct	s_env {
 	struct addrinfo			hints;
 	struct addrinfo			*res;
 	// SEND
-	char					buf[28];
+	char					buf[64];
 	char					*host_src;
 	char					*host_dst;
+	char					*hostname_dst;
 	struct ip				*ip;
 	struct icmp				*icmp;
 	// RECIEVE

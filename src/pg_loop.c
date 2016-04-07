@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/06 16:23:13 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 14:06:21 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	pg_display_info(t_env *env)
 {
-	char ip[INET_ADDRSTRLEN];
+//	char ip[INET_ADDRSTRLEN];
 
-	inet_ntop(env->res->ai_family, &(env->ip->ip_dst.s_addr), ip, sizeof(ip));
-	printf("PING %s (%s): %lu data bytes\n", env->host_dst, ip, sizeof(env->buf));
+//	inet_ntop(env->res->ai_family, &(env->ip->ip_dst.s_addr), ip, sizeof(ip));
+	printf("PING %s (%s): %lu data bytes\n", env->hostname_dst, env->host_dst, sizeof(env->buf));
 }
 
 void	pg_display_response(t_env *env, int bytes_receive, int seq,
