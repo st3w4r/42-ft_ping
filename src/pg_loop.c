@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 14:06:21 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 15:09:14 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	pg_timer(int interval)
 	tv_next = tv_current;
 	tv_next.tv_sec += interval;
 
-	while (tv_current.tv_sec < tv_next.tv_sec)
+	while (tv_current.tv_sec < tv_next.tv_sec ||
+			tv_current.tv_usec < tv_next.tv_usec)
 	{
 		if (gettimeofday(&tv_current, NULL) < 0)
 			ft_error_str_exit("Error gettimeofday\n");
