@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 15:56:04 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 18:28:00 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	pg_display_info(t_env *env)
 
 //	inet_ntop(env->res->ai_family, &(env->ip->ip_dst.s_addr), ip, sizeof(ip));
 	printf("PING %s (%s): %lu data bytes\n", env->hostname_dst, env->host_dst,
-		sizeof(env->buf));
+		sizeof(env->buf) - sizeof(*(env->icmp)));
 }
 
 void	pg_display_response(t_env *env, int bytes_receive, int seq,
@@ -27,8 +27,9 @@ void	pg_display_response(t_env *env, int bytes_receive, int seq,
 	char ip[INET_ADDRSTRLEN];
 
 	inet_ntop(env->res->ai_family, &(env->ip->ip_src.s_addr), ip, sizeof(ip));
-	printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3lf ms\n",
-	bytes_receive, ip, seq, env->ip->ip_ttl, duration);
+	printf("%lu bytes from %s: icmp_seq=%d ttl=%d time=%.3lf ms\n",
+	bytes_receive - sizeof(*(env->ip)), ip, seq, env->ip->ip_ttl, duration);
+
 }
 
 void	pg_display_stats(t_env *env)
@@ -38,7 +39,7 @@ void	pg_display_stats(t_env *env)
 	percentage_lost = 0;
 	if (env->packets_send != 0)
 		percentage_lost = 100 - ((env->packets_receive * 100) / env->packets_send);
-	printf("-- %s ping statistics ---\n", env->host_dst);
+	printf("-- %s ping statistics ---\n", env->hostname_dst);
 	printf("%u packets transmitted, %u packets received, %.2f%% packet loss\n",
 		env->packets_send, env->packets_receive, percentage_lost);
 	printf("round-trip min/avg/max/stddev = 2.354/2.396/2.425/0.031 ms\n");
@@ -85,7 +86,7 @@ void	pg_loop(t_env *env)
 	env->packets_receive = 0;
 	seq = 0;
 	pg_display_info(env);
-	while (env->packets_send < 20)
+	while (env->packets_send < env->count)
 	{
 //			printf("tv_usec: %ld\n", tv_current.tv_usec / 1000);
 
@@ -109,7 +110,7 @@ void	pg_loop(t_env *env)
 		{
 			if ((env->timeout_flag))
 			{
-				alarm(env->timeout);
+				alarm(1);
 				env->timeout_flag = FALSE;
 			}
 			pg_configure_receive(env);
