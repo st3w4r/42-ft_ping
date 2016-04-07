@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 14:21:01 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 15:54:41 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int			main(int argc, char **argv)
 
 	if (argc <= 1)
 		pg_error_usage();
-	signal(SIGALRM, pg_sig_handler);
-	signal(SIGINT, pg_sig_handler);
 	env.flags = 0;
 	pos_args = pg_parse_flags(&env, argc, argv);
 	env.hostname_dst = argv[pos_args];
@@ -58,6 +56,8 @@ int			main(int argc, char **argv)
 	env.pid = getpid();
 	pg_open_socket(&env);
 	pg_configure_header(&env);
+	signal(SIGALRM, pg_sig_handler);
+	signal(SIGINT, pg_sig_handler);
 	pg_loop(&env);
 	return (0);
 }

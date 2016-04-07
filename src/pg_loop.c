@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 15:09:14 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 15:56:04 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	pg_display_info(t_env *env)
 //	char ip[INET_ADDRSTRLEN];
 
 //	inet_ntop(env->res->ai_family, &(env->ip->ip_dst.s_addr), ip, sizeof(ip));
-	printf("PING %s (%s): %lu data bytes\n", env->hostname_dst, env->host_dst, sizeof(env->buf));
+	printf("PING %s (%s): %lu data bytes\n", env->hostname_dst, env->host_dst,
+		sizeof(env->buf));
 }
 
 void	pg_display_response(t_env *env, int bytes_receive, int seq,
@@ -84,7 +85,7 @@ void	pg_loop(t_env *env)
 	env->packets_receive = 0;
 	seq = 0;
 	pg_display_info(env);
-	while (env->packets_send < 10)
+	while (env->packets_send < 20)
 	{
 //			printf("tv_usec: %ld\n", tv_current.tv_usec / 1000);
 
@@ -104,11 +105,11 @@ void	pg_loop(t_env *env)
 
 //		pg_configure_receive(env);
 		env->timeout_flag = TRUE;
-		while (1)
+		while (42)
 		{
 			if ((env->timeout_flag))
 			{
-				alarm(1);
+				alarm(env->timeout);
 				env->timeout_flag = FALSE;
 			}
 			pg_configure_receive(env);
@@ -132,7 +133,7 @@ void	pg_loop(t_env *env)
 				env->packets_receive++;
 
 				pg_display_response(env, nb_receive, seq, duration);
-				pg_timer(1);
+				pg_timer(env->interval);
 				alarm(0);
 				seq++;
 				env->timeout_flag = TRUE;
