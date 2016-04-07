@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 18:28:00 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 19:07:55 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,19 @@ void	pg_display_response(t_env *env, int bytes_receive, int seq,
 void	pg_display_stats(t_env *env)
 {
 	double	percentage_lost;
+	double	avg;
 
 	percentage_lost = 0;
+	avg = 0;
 	if (env->packets_send != 0)
 		percentage_lost = 100 - ((env->packets_receive * 100) / env->packets_send);
 	printf("-- %s ping statistics ---\n", env->hostname_dst);
 	printf("%u packets transmitted, %u packets received, %.2f%% packet loss\n",
 		env->packets_send, env->packets_receive, percentage_lost);
-	printf("round-trip min/avg/max/stddev = 2.354/2.396/2.425/0.031 ms\n");
+	if (env->packets_send != 0)
+		avg = env->cumul / env->packets_send;
+	printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/0.031 ms\n", 
+		env->min, avg, env->max);
 	exit(0);
 }
 /*
@@ -132,7 +137,7 @@ void	pg_loop(t_env *env)
 				duration = (((double)tv_end.tv_sec * 1000000.0 + tv_end.tv_usec) - \
 				((double)tv_start.tv_sec * 1000000.0 + tv_start.tv_usec)) / 1000;
 				env->packets_receive++;
-
+				pg_duration_stats(env, duration);
 				pg_display_response(env, nb_receive, seq, duration);
 				pg_timer(env->interval);
 				alarm(0);

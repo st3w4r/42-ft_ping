@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:16:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 15:49:48 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 19:05:15 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,13 @@ char	*pg_get_ip_from_hostname(char *hostname)
 	sa_in = (struct sockaddr_in *)res->ai_addr;
 	inet_ntop(res->ai_family, &(sa_in->sin_addr), ip_share, INET_ADDRSTRLEN);
 	return (ip_share);
+}
+
+void	pg_duration_stats(t_env *env, double duration)
+{
+	if (duration > env->max)
+		env->max = duration;
+	if (duration < env->min)
+		env->min = duration;
+	env->cumul += duration;
 }

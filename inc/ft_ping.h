@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 18:19:13 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 19:17:39 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/socket.h>
 # include <sys/time.h>
 # include <arpa/inet.h>
+# include <float.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -47,12 +48,16 @@ typedef struct	s_env {
 	unsigned int			packets_send;
 	unsigned int			packets_receive;
 //	unsigned short			seq;
+	double					min;
+	double					max;
+	double					cumul;
+	double					stddev;
 	// SOCKET
 	int						s;
 	struct addrinfo			hints;
 	struct addrinfo			*res;
 	// SEND
-	char					buf[30];
+	char					buf[76];
 	char					*host_src;
 	char					*host_dst;
 	char					*hostname_dst;
@@ -94,5 +99,6 @@ unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
 void	pg_sig_handler(int sig);
 void	pg_timeout(t_env *env);
 char	*pg_get_ip_from_hostname(char *hostname);
+void	pg_duration_stats(t_env *env, double duration);
 
 #endif
