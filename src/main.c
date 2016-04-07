@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/06 16:14:44 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 12:21:05 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int			main(int argc, char **argv)
 	signal(SIGINT, pg_sig_handler);
 	env.flags = 0;
 	pos_args = pg_parse_flags(&env, argc, argv);
-	env.host_dst = argv[pos_args];
+//	env.host_dst = argv[pos_args];
+	env.host_dst = pg_get_ip_from_hostname(argv[pos_args]);
+	printf("Host argv: %s\n", argv[pos_args]);
+	printf("Host IP: %s\n", pg_get_ip_from_hostname(argv[pos_args]));
 	env.host_src = "0.0.0.0";
 	env.interval = 1;
 	env.timeout = 1;

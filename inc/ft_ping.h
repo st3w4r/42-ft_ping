@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/06 15:19:21 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/07 12:16:55 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
 	unsigned short seq);
 void	pg_sig_handler(int sig);
 void	pg_timeout(t_env *env);
+char	*pg_get_ip_from_hostname(char *hostname);
 
 #endif
