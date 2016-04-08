@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 19:07:55 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:20:33 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	pg_display_stats(t_env *env)
 {
 	double	percentage_lost;
 	double	avg;
+	double	variant;
 
 	percentage_lost = 0;
 	avg = 0;
+	variant = 0;
 	if (env->packets_send != 0)
 		percentage_lost = 100 - ((env->packets_receive * 100) / env->packets_send);
 	printf("-- %s ping statistics ---\n", env->hostname_dst);
@@ -46,8 +48,11 @@ void	pg_display_stats(t_env *env)
 		env->packets_send, env->packets_receive, percentage_lost);
 	if (env->packets_send != 0)
 		avg = env->cumul / env->packets_send;
-	printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/0.031 ms\n", 
-		env->min, avg, env->max);
+	if ((env->packets_send - avg * avg) != 0)
+		variant = env->cumul_s / env->packets_send - avg * avg;
+	if (env->packets_receive > 0)
+		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", 
+			env->min, avg, env->max, ft_sqrt(variant));
 	exit(0);
 }
 /*
@@ -115,7 +120,7 @@ void	pg_loop(t_env *env)
 		{
 			if ((env->timeout_flag))
 			{
-				alarm(1);
+				alarm(env->timeout);
 				env->timeout_flag = FALSE;
 			}
 			pg_configure_receive(env);
@@ -127,10 +132,11 @@ void	pg_loop(t_env *env)
 			if (env->timeout_flag)
 			{
 				printf("Request timeout for icmp_seq %hu\n", seq);
+				alarm(0);
+				env->timeout_flag = TRUE;
 				seq++;
 				break;
 			}
-			
 			
 			if (env->icmp->icmp_hun.ih_idseq.icd_id == env->pid)
 			{
@@ -141,8 +147,8 @@ void	pg_loop(t_env *env)
 				pg_display_response(env, nb_receive, seq, duration);
 				pg_timer(env->interval);
 				alarm(0);
-				seq++;
 				env->timeout_flag = TRUE;
+				seq++;
 				break;
 			}
 		}

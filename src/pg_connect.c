@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/07 16:03:51 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 15:44:25 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:34:37 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		pg_open_socket(t_env *env)
 	env->hints.ai_socktype = SOCK_RAW;
 	env->hints.ai_protocol = IPPROTO_ICMP;
 	if (getaddrinfo(env->host_dst, NULL, &(env->hints), &(env->res)) < 0)
-		ft_error_str_exit("Error getaddrinfo\n");
+		ft_error_str_exit("ping: unknown host\n");
 	if ((env->s = socket(env->res->ai_family, env->res->ai_socktype,
 		env->res->ai_protocol)) < 0)
 		ft_error_str_exit("Error socket opening\n");

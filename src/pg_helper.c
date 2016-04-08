@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:16:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 19:05:15 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:34:40 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*pg_get_ip_from_hostname(char *hostname)
 	if((ip_share = malloc(INET_ADDRSTRLEN)) < 0)
 		ft_error_str_exit("Error malloc");
 	if (getaddrinfo(hostname, NULL, &hints, &(res)) < 0)
-		ft_error_str_exit("Error getaddrinfo\n");
+		ft_error_str_exit("ping: unknown host\n");
 	sa_in = (struct sockaddr_in *)res->ai_addr;
 	inet_ntop(res->ai_family, &(sa_in->sin_addr), ip_share, INET_ADDRSTRLEN);
 	return (ip_share);
@@ -64,4 +64,5 @@ void	pg_duration_stats(t_env *env, double duration)
 	if (duration < env->min)
 		env->min = duration;
 	env->cumul += duration;
+	env->cumul_s += duration * duration;
 }

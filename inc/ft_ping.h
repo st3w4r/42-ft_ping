@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/07 19:17:39 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:08:12 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct	s_env {
 	double					min;
 	double					max;
 	double					cumul;
-	double					stddev;
+	double					cumul_s;
 	// SOCKET
 	int						s;
 	struct addrinfo			hints;
