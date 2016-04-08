@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/08 15:55:47 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/08 17:17:02 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,55 @@ static void	pg_error_usage(void)
 	ft_error_str_exit("Usage: ping [OPTIONS] HOST\n");
 }
 
+static void	pg_help(void)
+{
+	printf("Usage: ping [OPTION...] HOST ... \n"
+"Send ICMP ECHO_REQUEST packets to network hosts.\n"
+"\n"
+"Options controlling ICMP request types:\n"
+"   --address              send ICMP_ADDRESS packets (root only)\n"
+"   --echo                 send ICMP_ECHO packets (default)\n"
+"   --timestamp            send ICMP_TIMESTAMP packets\n"
+"   -t, --type=TYPE            send TYPE packets\n"
+"\n"
+"Options valid for all request types:\n"
+"\n"
+"   -c, --count=NUMBER         stop after sending NUMBER packets\n"
+"   -d, --debug                set the SO_DEBUG option\n"
+"   -i, --interval=NUMBER      wait NUMBER seconds between sending each packet\n"
+"   -n, --numeric              do not resolve host addresses\n"
+"   -r, --ignore-routing       send directly to a host on an attached network\n"
+"   -v, --verbose              verbose output\n"
+"   -w, --timeout=N            stop after N seconds\n"
+"   -W, --linger=N             number of seconds to wait for response\n"
+"\n"
+"Options valid for --echo requests:\n"
+"\n"
+"   -f, --flood                flood ping (root only)\n"
+"   -l, --preload=NUMBER       send NUMBER packets as fast as possible before\n"
+"   falling into normal mode of behavior (root only)\n"
+"   -p, --pattern=PATTERN      fill ICMP packet with given pattern (hex)\n"
+"   -q, --quiet                quiet output\n"
+"   -R, --route                record route\n"
+"   -s, --size=NUMBER          send NUMBER data octets\n"
+"\n"
+"   -?, --help                 give this help list\n"
+"   --usage                give a short usage message\n"
+"   -V, --version              print program version\n"
+"\n"
+"Mandatory or optional arguments to long options are also mandatory or optional"
+"for any corresponding short options.\n"
+"\n"
+"Options marked with (root only) are available only to superuser.\n");
+	exit(0);
+}
+
 static void	pg_parse_flags_one_arg(t_env *env, char *str)
 {
 	if (ft_strchr(str, 'v') != NULL)
 		env->flags |= FLAGS_V;
 	if (ft_strchr(str, 'h') != NULL)
-		env->flags |= FLAGS_H;
+		pg_help();
 }
 
 static int	pg_parse_flags(t_env *env, int nb_args, char **args)
