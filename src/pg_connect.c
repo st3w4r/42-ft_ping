@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/07 16:03:51 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/08 16:34:37 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 18:04:31 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int		pg_open_socket(t_env *env)
 		ft_error_str_exit("Error socket opening\n");
 	if (setsockopt(env->s, IPPROTO_IP, IP_HDRINCL, &hincl, sizeof(hincl)) < 0)
 		ft_error_str_exit("Error setsocket\n");
-
 	return (env->s);
 }
 

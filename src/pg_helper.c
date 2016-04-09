@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:16:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 17:43:49 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 18:45:10 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
 	return (~(sum));
 }
 
-void pg_sig_handler(int sig)
+void			pg_sig_handler(int sig)
 {
 	if (sig == SIGINT)
 		pg_display_stats(&env);
@@ -33,17 +33,16 @@ void pg_sig_handler(int sig)
 		env.timeout_flag = TRUE;
 }
 
-char	*pg_get_ip_from_hostname(char *hostname)
+char			*pg_get_ip_from_hostname(char *hostname)
 {
-	struct addrinfo hints;
-	struct addrinfo *res;
-	struct sockaddr_in *sa_in;
-	char *ip_share;
+	struct addrinfo		hints;
+	struct addrinfo		*res;
+	struct sockaddr_in	*sa_in;
+	char				*ip_share;
 
 	ft_memset(&(hints), 0, sizeof(hints));
 	hints.ai_family = AF_INET;
-
-	if((ip_share = malloc(INET_ADDRSTRLEN)) < 0)
+	if ((ip_share = malloc(INET_ADDRSTRLEN)) < 0)
 		ft_error_str_exit("Error malloc");
 	if (getaddrinfo(hostname, NULL, &hints, &(res)) < 0)
 		ft_error_str_exit("ping: unknown host\n");
@@ -52,7 +51,7 @@ char	*pg_get_ip_from_hostname(char *hostname)
 	return (ip_share);
 }
 
-void	pg_duration_stats(t_env *env, double duration)
+void			pg_duration_stats(t_env *env, double duration)
 {
 	if (duration > env->max)
 		env->max = duration;

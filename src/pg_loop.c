@@ -6,13 +6,13 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 17:45:24 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 18:44:49 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-static void	pg_timer(int interval)
+static void		pg_timer(int interval)
 {
 	struct timeval tv_current;
 	struct timeval tv_next;
@@ -21,7 +21,6 @@ static void	pg_timer(int interval)
 		ft_error_str_exit("Error gettimeofday\n");
 	tv_next = tv_current;
 	tv_next.tv_sec += interval;
-
 	while (tv_current.tv_sec < tv_next.tv_sec ||
 			tv_current.tv_usec < tv_next.tv_usec)
 	{
@@ -72,7 +71,7 @@ static t_bool	pg_loop_receive(t_env *env,
 	return (TRUE);
 }
 
-void	pg_loop(t_env *env)
+void			pg_loop(t_env *env)
 {
 	int				nb_send;
 	struct timeval	tv_start;
@@ -81,6 +80,7 @@ void	pg_loop(t_env *env)
 	env->packets_send = 0;
 	env->packets_receive = 0;
 	env->seq = 0;
+	nb_send = 0;
 	pg_display_info(env);
 	while (env->packets_send < env->count)
 	{
@@ -92,7 +92,8 @@ void	pg_loop(t_env *env)
 		if (nb_send >= 0)
 			env->packets_send++;
 		alarm(env->timeout);
-		while (pg_loop_receive(env, tv_start, tv_end));
+		while (pg_loop_receive(env, tv_start, tv_end))
+			;
 	}
 	pg_display_stats(env);
 }

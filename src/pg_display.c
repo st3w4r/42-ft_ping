@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/09 15:26:01 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 15:34:36 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 18:39:19 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	pg_display_stats(t_env *env)
 	avg = 0;
 	variant = 0;
 	if (env->packets_send != 0)
-		percentage_lost = 100 - ((env->packets_receive * 100) / env->packets_send);
+		percentage_lost = 100 - ((env->packets_receive * 100) /
+								env->packets_send);
 	printf("-- %s ping statistics ---\n", env->hostname_dst);
 	printf("%u packets transmitted, %u packets received, %.2f%% packet loss\n",
 		env->packets_send, env->packets_receive, percentage_lost);
@@ -47,7 +48,7 @@ void	pg_display_stats(t_env *env)
 	if ((env->packets_send - avg * avg) != 0)
 		variant = env->cumul_s / env->packets_send - avg * avg;
 	if (env->packets_receive > 0)
-		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", 
+		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n",
 			env->min, avg, env->max, sqrt(variant));
 	exit(0);
 }
