@@ -6,7 +6,7 @@
 #    By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/04 16:13:54 by ybarbier          #+#    #+#              #
-#    Updated: 2016/04/08 16:07:42 by ybarbier         ###   ########.fr        #
+#    Updated: 2016/04/09 15:35:35 by ybarbier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ LIBS = -L libft/ -lft -lm
 SRC =	main.c \
 	pg_connect.c \
 	pg_loop.c \
-	pg_helper.c
+	pg_helper.c \
+	pg_display.c
 
 OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))
 

@@ -6,12 +6,12 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/08 16:20:33 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 15:47:06 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
-
+/*
 void	pg_display_info(t_env *env)
 {
 //	char ip[INET_ADDRSTRLEN];
@@ -55,6 +55,7 @@ void	pg_display_stats(t_env *env)
 			env->min, avg, env->max, sqrt(variant));
 	exit(0);
 }
+*/
 /*
 void	pg_timeout(t_env *env)
 {
@@ -82,25 +83,65 @@ static void	pg_timer(int interval)
 	}
 //	printf("Time: %ld %ld\n", tv_current.tv_sec, tv_current.tv_usec);
 }
-
+/*
+static void	pg_loop_receive(t_env *env)
+{
+	env->timeout_flag = TRUE;
+	while (42)
+	{
+		if ((env->timeout_flag))
+		{
+			alarm(env->timeout);
+			env->timeout_flag = FALSE;
+		}
+		pg_configure_receive(env);
+		nb_receive = recvmsg(env->s, &(env->msg), MSG_DONTWAIT);
+		duration = 0;
+		gettimeofday(&tv_end, NULL);
+		
+		//if ((tv_end.tv_sec - tv_start.tv_sec) >= env->timeout)
+		if (env->timeout_flag)
+		{
+			printf("Request timeout for icmp_seq %hu\n", env->seq);
+			alarm(0);
+			env->timeout_flag = TRUE;
+			env->seq++;
+			break;
+		}
+		
+		if (env->icmp->icmp_hun.ih_idseq.icd_id == env->pid)
+		{
+			duration = (((double)tv_end.tv_sec * 1000000.0 + tv_end.tv_usec) - \
+			((double)tv_start.tv_sec * 1000000.0 + tv_start.tv_usec)) / 1000;
+			env->packets_receive++;
+			pg_duration_stats(env, duration);
+			pg_display_response(env, nb_receive, env->seq, duration);
+			pg_timer(env->interval);
+			alarm(0);
+			env->timeout_flag = TRUE;
+			env->seq++;
+			break;
+		}
+	}
+}
+*/
 void	pg_loop(t_env *env)
 {
 	int				nb_send;
 	int				nb_receive;
-	unsigned short	seq;
+//	unsigned short	seq;
 	struct timeval	tv_start;
 	struct timeval	tv_end;
 	double			duration;
 
 	env->packets_send = 0;
 	env->packets_receive = 0;
-	seq = 0;
+	env->seq = 0;
 	pg_display_info(env);
 	while (env->packets_send < env->count)
 	{
-//			printf("tv_usec: %ld\n", tv_current.tv_usec / 1000);
 
-		pg_configure_send(env, env->pid, seq);
+		pg_configure_send(env, env->pid, env->seq);
 
 		gettimeofday(&tv_start, NULL);
 		if ((nb_send = sendto(env->s, env->buf, sizeof(env->buf), 0,
@@ -131,10 +172,10 @@ void	pg_loop(t_env *env)
 			//if ((tv_end.tv_sec - tv_start.tv_sec) >= env->timeout)
 			if (env->timeout_flag)
 			{
-				printf("Request timeout for icmp_seq %hu\n", seq);
+				printf("Request timeout for icmp_seq %hu\n", env->seq);
 				alarm(0);
 				env->timeout_flag = TRUE;
-				seq++;
+				env->seq++;
 				break;
 			}
 			
@@ -144,11 +185,11 @@ void	pg_loop(t_env *env)
 				((double)tv_start.tv_sec * 1000000.0 + tv_start.tv_usec)) / 1000;
 				env->packets_receive++;
 				pg_duration_stats(env, duration);
-				pg_display_response(env, nb_receive, seq, duration);
+				pg_display_response(env, nb_receive, env->seq, duration);
 				pg_timer(env->interval);
 				alarm(0);
 				env->timeout_flag = TRUE;
-				seq++;
+				env->seq++;
 				break;
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/08 16:08:12 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 15:44:15 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct	s_env {
 	pid_t					pid;
 	unsigned int			packets_send;
 	unsigned int			packets_receive;
-//	unsigned short			seq;
+	unsigned short			seq;
 	double					min;
 	double					max;
 	double					cumul;
@@ -87,8 +87,16 @@ void	pg_configure_receive(t_env *env);
 ** Desc: Loop to send ICMP ECHO and receive ICMP REPLY
 */
 
-void	pg_display_stats(t_env *env);
 void	pg_loop(t_env *env);
+
+/*
+** Name: pg_display
+** Desc: Functions to display informations
+*/
+void	pg_display_info(t_env *env);
+void	pg_display_response(t_env *env, int bytes_receive, int seq,
+		double duration);
+void	pg_display_stats(t_env *env);
 
 /*
 ** Name: pg_helper
