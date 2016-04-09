@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 17:34:03 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 17:43:59 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct	s_env {
 	unsigned int			interval;
 	unsigned int			timeout;
 	t_bool					timeout_flag;
-//	t_bool					alarm_flag;
 	pid_t					pid;
 	unsigned int			packets_send;
 	unsigned int			packets_receive;
@@ -107,7 +106,6 @@ void	pg_display_stats(t_env *env);
 unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
 	unsigned short seq);
 void	pg_sig_handler(int sig);
-//void	pg_timeout(t_env *env);
 char	*pg_get_ip_from_hostname(char *hostname);
 void	pg_duration_stats(t_env *env, double duration);
 

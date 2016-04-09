@@ -6,24 +6,11 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:52:17 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 17:41:27 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 17:45:24 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
-
-static t_bool	pg_timeout(t_env *env)
-{
-	if (env->timeout_flag)
-	{
-		printf("Request timeout for icmp_seq %hu\n", env->seq);
-		alarm(0);
-		env->timeout_flag = FALSE;
-		env->seq++;
-		return (FALSE);
-	}
-	return (TRUE);
-}
 
 static void	pg_timer(int interval)
 {
@@ -41,6 +28,19 @@ static void	pg_timer(int interval)
 		if (gettimeofday(&tv_current, NULL) < 0)
 			ft_error_str_exit("Error gettimeofday\n");
 	}
+}
+
+static t_bool	pg_timeout(t_env *env)
+{
+	if (env->timeout_flag)
+	{
+		printf("Request timeout for icmp_seq %hu\n", env->seq);
+		alarm(0);
+		env->timeout_flag = FALSE;
+		env->seq++;
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 static t_bool	pg_loop_receive(t_env *env,

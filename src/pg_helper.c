@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:16:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 17:32:25 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 17:43:49 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,7 @@ void pg_sig_handler(int sig)
 		pg_display_stats(&env);
 	if (sig == SIGALRM)
 		env.timeout_flag = TRUE;
-//		pg_timeout(&env);
 }
-
-/*
-void	pg_timeout(t_env *env)
-{
-	env->timeout_flag = TRUE;
-//	env->alarm_flag = TRUE;
-}
-*/
 
 char	*pg_get_ip_from_hostname(char *hostname)
 {
