@@ -26,6 +26,7 @@
 # include <sys/time.h>
 # include <arpa/inet.h>
 # include <float.h>
+# include <math.h>
 
 #define TRUE 1
 #define FALSE 0

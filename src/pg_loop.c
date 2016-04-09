@@ -52,7 +52,7 @@ void	pg_display_stats(t_env *env)
 		variant = env->cumul_s / env->packets_send - avg * avg;
 	if (env->packets_receive > 0)
 		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", 
-			env->min, avg, env->max, ft_sqrt(variant));
+			env->min, avg, env->max, sqrt(variant));
 	exit(0);
 }
 /*
