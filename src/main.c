@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/08 17:17:02 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 17:23:56 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int			main(int argc, char **argv)
 	env.host_src = "0.0.0.0";
 	env.interval = 1;
 	env.timeout = 1;
-	env.count = 10;
+	env.count = 20;
 	env.min = DBL_MAX;
 	env.pid = getpid();
 	pg_open_socket(&env);

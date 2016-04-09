@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 16:09:50 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/09 17:34:03 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct	s_env {
 	unsigned int			interval;
 	unsigned int			timeout;
 	t_bool					timeout_flag;
+//	t_bool					alarm_flag;
 	pid_t					pid;
 	unsigned int			packets_send;
 	unsigned int			packets_receive;
