@@ -33,7 +33,8 @@ static t_bool	pg_timeout(t_env *env)
 {
 	if (env->timeout_flag)
 	{
-		printf("Request timeout for icmp_seq %hu\n", env->seq);
+		if (env->flags & FLAGS_V)
+			printf("Request timeout for icmp_seq %hu\n", env->seq);
 		alarm(0);
 		env->timeout_flag = FALSE;
 		env->seq++;
