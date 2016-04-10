@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/10 18:43:19 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/10 19:05:09 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,22 @@ int			pg_options(t_env *env, int argc, char **argv)
 {
 	int opt;
 
-	while ((opt = getopt(argc, argv, "avh:")) != -1)
+	while ((opt = getopt(argc, argv, "avhc:")) != -1)
 	{
 		if (opt == 'a')
 			printf("Flag a\n");
 		else if (opt == 'v')
 			env->flags |= FLAGS_V;
+		else if (opt == 'c')
+		{
+			if (ft_atoi(optarg) > 0)
+				env->count = ft_atoi(optarg);
+			else
+				ft_error_str_exit("ft_ping: invalid value\n");
+		}
 		else
 			pg_error_usage();
 	}
-	printf("POS: %d\n", optind);
 	return (optind);
 }
 
@@ -116,7 +122,7 @@ int			main(int argc, char **argv)
 	env.host_src = "0.0.0.0";
 	env.interval = 1;
 	env.timeout = 1;
-	env.count = 20;
+//	env.count = 20;
 	env.min = DBL_MAX;
 	env.pid = getpid();
 	pg_open_socket(&env);
