@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 18:46:29 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/10 17:46:38 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	pg_error_usage(void)
 {
-	ft_error_str_exit("Usage: ping [OPTIONS] HOST\n");
+	ft_error_str_exit("Usage: ft_ping [OPTIONS] HOST\n");
 }
 
 static void	pg_help(void)
@@ -89,6 +89,8 @@ int			main(int argc, char **argv)
 
 	if (argc <= 1)
 		pg_error_usage();
+	if (getuid() != 0)
+		ft_error_str_exit("ft_ping: Operation not permitted\n");
 	env.flags = 0;
 	pos_args = pg_parse_flags(&env, argc, argv);
 	env.hostname_dst = argv[pos_args];
