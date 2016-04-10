@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/10 17:46:38 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/10 18:43:19 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,23 @@ static int	pg_parse_flags(t_env *env, int nb_args, char **args)
 	return (i);
 }
 
+int			pg_options(t_env *env, int argc, char **argv)
+{
+	int opt;
+
+	while ((opt = getopt(argc, argv, "avh:")) != -1)
+	{
+		if (opt == 'a')
+			printf("Flag a\n");
+		else if (opt == 'v')
+			env->flags |= FLAGS_V;
+		else
+			pg_error_usage();
+	}
+	printf("POS: %d\n", optind);
+	return (optind);
+}
+
 int			main(int argc, char **argv)
 {
 	int		pos_args;
@@ -92,7 +109,8 @@ int			main(int argc, char **argv)
 	if (getuid() != 0)
 		ft_error_str_exit("ft_ping: Operation not permitted\n");
 	env.flags = 0;
-	pos_args = pg_parse_flags(&env, argc, argv);
+	pos_args = pg_options(&env, argc, argv);
+//	pos_args = pg_parse_flags(&env, argc, argv);
 	env.hostname_dst = argv[pos_args];
 	env.host_dst = pg_get_ip_from_hostname(argv[pos_args]);
 	env.host_src = "0.0.0.0";
