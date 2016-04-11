@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/10 19:05:09 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 13:29:15 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,41 @@ int			pg_options(t_env *env, int argc, char **argv)
 {
 	int opt;
 
-	while ((opt = getopt(argc, argv, "avhc:")) != -1)
+	while ((opt = getopt(argc, argv, "vhc:i:W:")) != -1)
 	{
-		if (opt == 'a')
-			printf("Flag a\n");
+		if (opt == 'h')
+			pg_help();
 		else if (opt == 'v')
 			env->flags |= FLAGS_V;
 		else if (opt == 'c')
 		{
-			if (ft_atoi(optarg) > 0)
+			if (ft_atoi(optarg) >= 0)
 				env->count = ft_atoi(optarg);
 			else
 				ft_error_str_exit("ft_ping: invalid value\n");
 		}
+		else if (opt == 'i')
+		{
+			if (ft_atoi(optarg) >= 0)
+				env->interval = ft_atoi(optarg);
+			else
+				ft_error_str_exit("ft_ping: invalid value\n");
+		}
+		else if (opt == 'W')
+		{
+			if (ft_atoi(optarg) > 0)
+				env->timeout = ft_atoi(optarg);
+			else
+				ft_error_str_exit("ft_ping: invalid value\n");
+		}
+		else if (opt == 'm')
+		{
+			if (ft_atoi(optarg) > 0)
+				env->timeout = ft_atoi(optarg);
+			else
+				ft_error_str_exit("ft_ping: invalid value\n");
+		}
+
 		else
 			pg_error_usage();
 	}
@@ -115,14 +137,14 @@ int			main(int argc, char **argv)
 	if (getuid() != 0)
 		ft_error_str_exit("ft_ping: Operation not permitted\n");
 	env.flags = 0;
+	env.count = 0;
+	env.interval = 1;
+	env.timeout = 1;
 	pos_args = pg_options(&env, argc, argv);
 //	pos_args = pg_parse_flags(&env, argc, argv);
 	env.hostname_dst = argv[pos_args];
 	env.host_dst = pg_get_ip_from_hostname(argv[pos_args]);
 	env.host_src = "0.0.0.0";
-	env.interval = 1;
-	env.timeout = 1;
-//	env.count = 20;
 	env.min = DBL_MAX;
 	env.pid = getpid();
 	pg_open_socket(&env);
