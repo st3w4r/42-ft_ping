@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 13:13:56 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 14:50:46 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,9 @@ void	pg_display_stats(t_env *env);
 ** Desc: Helpers Functions
 */
 
-unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
-	unsigned short seq);
+//unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
+//	unsigned short seq);
+unsigned short	pg_icmp_checksum(unsigned short *buf, int len);
 void	pg_sig_handler(int sig);
 char	*pg_get_ip_from_hostname(char *hostname);
 void	pg_duration_stats(t_env *env, double duration);

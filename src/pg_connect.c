@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/07 16:03:51 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 18:04:31 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 15:01:14 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	pg_configure_send(t_env *env, unsigned short id, unsigned short seq)
 	env->icmp->icmp_code = 0;
 	env->icmp->icmp_hun.ih_idseq.icd_id = id;
 	env->icmp->icmp_hun.ih_idseq.icd_seq = seq;
-	env->icmp->icmp_cksum = htons(pg_icmp_checksum(env->icmp->icmp_type,
-		env->icmp->icmp_code, htons(id), htons(seq)));
+	env->icmp->icmp_cksum = pg_icmp_checksum((void*)(env->icmp),
+								sizeof(env->icmp));
 }
 
 void	pg_configure_receive(t_env *env)

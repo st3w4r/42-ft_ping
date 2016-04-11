@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 13:29:15 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 15:02:33 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int			pg_options(t_env *env, int argc, char **argv)
 			else
 				ft_error_str_exit("ft_ping: invalid value\n");
 		}
-
 		else
 			pg_error_usage();
 	}

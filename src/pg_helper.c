@@ -6,23 +6,27 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:16:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/09 18:45:10 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 15:02:22 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
-		unsigned short seq)
+unsigned short	pg_icmp_checksum(unsigned short *data, int len)
 {
-	unsigned short sum;
+	unsigned long checksum;
 
-	sum = 0;
-	sum = type << 8;
-	sum += code;
-	sum += id;
-	sum += seq;
-	return (~(sum));
+	checksum = 0;
+	while (len > 1)
+	{
+		checksum = checksum + *data++;
+		len = len - sizeof(unsigned short);
+	}
+	if (len)
+		checksum = checksum + *(unsigned char*)data;
+	checksum = (checksum >> 16) + (checksum & 0xffff);
+	checksum = checksum + (checksum >> 16);
+	return (unsigned short)(~checksum);
 }
 
 void			pg_sig_handler(int sig)
