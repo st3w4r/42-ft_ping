@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 15:02:33 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 15:15:33 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,14 @@ int			pg_options(t_env *env, int argc, char **argv)
 {
 	int opt;
 
-	while ((opt = getopt(argc, argv, "vhc:i:W:")) != -1)
+	while ((opt = getopt(argc, argv, "vhDc:i:W:m:")) != -1)
 	{
 		if (opt == 'h')
 			pg_help();
 		else if (opt == 'v')
 			env->flags |= FLAGS_V;
+		else if (opt == 'D')
+			env->df_flag = TRUE;
 		else if (opt == 'c')
 		{
 			if (ft_atoi(optarg) >= 0)
@@ -116,8 +118,8 @@ int			pg_options(t_env *env, int argc, char **argv)
 		}
 		else if (opt == 'm')
 		{
-			if (ft_atoi(optarg) > 0)
-				env->timeout = ft_atoi(optarg);
+			if (ft_atoi(optarg) >= 0 && ft_atoi(optarg) <= 255)
+				env->ttl = ft_atoi(optarg);
 			else
 				ft_error_str_exit("ft_ping: invalid value\n");
 		}
@@ -139,6 +141,7 @@ int			main(int argc, char **argv)
 	env.count = 0;
 	env.interval = 1;
 	env.timeout = 1;
+	env.ttl = 64;
 	pos_args = pg_options(&env, argc, argv);
 //	pos_args = pg_parse_flags(&env, argc, argv);
 	env.hostname_dst = argv[pos_args];

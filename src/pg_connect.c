@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/07 16:03:51 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 15:01:14 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 15:15:07 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	pg_configure_send(t_env *env, unsigned short id, unsigned short seq)
 	env->ip->ip_tos = 0;
 	env->ip->ip_len = htons(sizeof(env->buf));
 	env->ip->ip_id = 0;
-	env->ip->ip_off |= htons(IP_DF);
-	env->ip->ip_ttl = 64;
+	env->ip->ip_off |= env->df_flag ? htons(IP_DF) : 0;
+	env->ip->ip_ttl = env->ttl;
 	env->ip->ip_p = env->res->ai_protocol;
 	env->ip->ip_sum = 0;
 	inet_pton(env->res->ai_family, env->host_src, &(env->ip->ip_src.s_addr));
@@ -55,7 +55,7 @@ void	pg_configure_send(t_env *env, unsigned short id, unsigned short seq)
 	env->icmp->icmp_code = 0;
 	env->icmp->icmp_hun.ih_idseq.icd_id = id;
 	env->icmp->icmp_hun.ih_idseq.icd_seq = seq;
-	env->icmp->icmp_cksum = pg_icmp_checksum((void*)(env->icmp),
+	env->icmp->icmp_cksum = pg_icmp_checksum((unsigned short*)(env->icmp),
 								sizeof(env->icmp));
 }
 
