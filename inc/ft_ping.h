@@ -6,12 +6,12 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:51:48 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 15:14:28 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 16:54:10 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PING_H
-# define PING_H
+#ifndef FT_PING_H
+# define FT_PING_H
 
 # include "libft.h"
 # include <stdio.h>
@@ -28,8 +28,8 @@
 # include <float.h>
 # include <math.h>
 
-#define TRUE 1
-#define FALSE 0
+# define TRUE 1
+# define FALSE 0
 
 typedef unsigned char	t_bool;
 
@@ -69,8 +69,8 @@ typedef struct	s_env {
 	// RECIEVE
 	struct iovec			iov[1];
 	struct msghdr			msg;
-	char					bufControl[1000];
-}							t_env;
+	char					buf_control[1000];
+}				t_env;
 
 t_env	env;
 
@@ -105,8 +105,6 @@ void	pg_display_stats(t_env *env);
 ** Desc: Helpers Functions
 */
 
-//unsigned short	pg_icmp_checksum(char type, char code, unsigned short id,
-//	unsigned short seq);
 unsigned short	pg_icmp_checksum(unsigned short *buf, int len);
 void	pg_sig_handler(int sig);
 char	*pg_get_ip_from_hostname(char *hostname);

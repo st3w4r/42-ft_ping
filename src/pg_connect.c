@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/07 16:03:51 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 15:15:07 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 16:29:17 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	pg_configure_receive(t_env *env)
 	env->msg.msg_namelen = env->res->ai_addrlen;
 	env->msg.msg_iov = env->iov;
 	env->msg.msg_iovlen = 1;
-	env->msg.msg_control = &(env->bufControl);
-	env->msg.msg_controllen = sizeof(env->bufControl);
+	env->msg.msg_control = &(env->buf_control);
+	env->msg.msg_controllen = sizeof(env->buf_control);
 	env->msg.msg_flags = 0;
 }

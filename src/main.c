@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 16:22:32 by ybarbier          #+#    #+#             */
-/*   Updated: 2016/04/11 15:32:17 by ybarbier         ###   ########.fr       */
+/*   Updated: 2016/04/11 16:53:54 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,22 @@ static void	pg_error_usage(void)
 static void	pg_help(void)
 {
 	printf("Usage: ping [OPTION...] HOST ... \n"
-"Send ICMP ECHO_REQUEST packets to network hosts.\n"
-"\n"
-"   -v                verbose output\n"
-"   -D                set the DONT FRAGMENT flag\n"
-"   -c=NUMBER         stop after sending NUMBER packets\n"
-"   -i=NUMBER         wait NUMBER seconds between sending each packet\n"
-"   -W=NUMBER         number of seconds to wait for response\n"
-"   -m=NUMBER          set the ttl\n"
-"\n"
-"   -h                give this help list\n");
+	"Send ICMP ECHO_REQUEST packets to network hosts.\n"
+	"\n"
+	"   -v                verbose output\n"
+	"   -D                set the DONT FRAGMENT flag\n"
+	"   -c=NUMBER         stop after sending NUMBER packets\n"
+	"   -i=NUMBER         wait NUMBER seconds between sending each packet\n"
+	"   -W=NUMBER         number of seconds to wait for response\n"
+	"   -m=NUMBER          set the ttl\n"
+	"\n"
+	"   -h                give this help list\n");
 	exit(0);
 }
 
-static void	pg_parse_flags_one_arg(t_env *env, char *str)
+static void	pg_e_i(void)
 {
-	if (ft_strchr(str, 'v') != NULL)
-		env->flags |= FLAGS_V;
-	if (ft_strchr(str, 'h') != NULL)
-		pg_help();
-}
-
-static int	pg_parse_flags(t_env *env, int nb_args, char **args)
-{
-	int i;
-
-	i = 1;
-	while (i < nb_args && ft_strncmp("-", args[i], 1) == 0)
-	{
-		if (args[i][1] && ft_isdigit(args[i][1]) == 1)
-			break ;
-		pg_parse_flags_one_arg(env, args[i]);
-		++i;
-	}
-	return (i);
+	ft_error_str_exit("ft_ping: invalid value\n");
 }
 
 int			pg_options(t_env *env, int argc, char **argv)
@@ -69,33 +51,14 @@ int			pg_options(t_env *env, int argc, char **argv)
 		else if (opt == 'D')
 			env->df_flag = TRUE;
 		else if (opt == 'c')
-		{
-			if (ft_atoi(optarg) >= 0)
-				env->count = ft_atoi(optarg);
-			else
-				ft_error_str_exit("ft_ping: invalid value\n");
-		}
+			(ft_atoi(optarg) >= 0) ? env->count = ft_atoi(optarg) : pg_e_i();
 		else if (opt == 'i')
-		{
-			if (ft_atoi(optarg) >= 0)
-				env->interval = ft_atoi(optarg);
-			else
-				ft_error_str_exit("ft_ping: invalid value\n");
-		}
+			(ft_atoi(optarg) >= 0) ? env->interval = ft_atoi(optarg) : pg_e_i();
 		else if (opt == 'W')
-		{
-			if (ft_atoi(optarg) > 0)
-				env->timeout = ft_atoi(optarg);
-			else
-				ft_error_str_exit("ft_ping: invalid value\n");
-		}
+			(ft_atoi(optarg) > 0) ? env->timeout = ft_atoi(optarg) : pg_e_i();
 		else if (opt == 'm')
-		{
-			if (ft_atoi(optarg) >= 0 && ft_atoi(optarg) <= 255)
-				env->ttl = ft_atoi(optarg);
-			else
-				ft_error_str_exit("ft_ping: invalid value\n");
-		}
+			(ft_atoi(optarg) >= 0 && ft_atoi(optarg) <= 255) ?
+				env->ttl = ft_atoi(optarg) : pg_e_i();
 		else
 			pg_error_usage();
 	}
@@ -116,7 +79,6 @@ int			main(int argc, char **argv)
 	env.timeout = 1;
 	env.ttl = 64;
 	pos_args = pg_options(&env, argc, argv);
-//	pos_args = pg_parse_flags(&env, argc, argv);
 	env.hostname_dst = argv[pos_args];
 	env.host_dst = pg_get_ip_from_hostname(argv[pos_args]);
 	env.host_src = "0.0.0.0";
